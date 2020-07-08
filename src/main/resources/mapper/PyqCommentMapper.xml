@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.scau.dbclub.mychat.dao.PyqCommentMapper">
+  <resultMap id="BaseResultMap" type="cn.edu.scau.dbclub.mychat.pojo.do0.PyqComment">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="pyq_id" jdbcType="INTEGER" property="pyqId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+  </resultMap>
+  <delete id="deletePyqComment" parameterType="java.lang.Integer">
+    delete from pyq_comment
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="savePyqComment" parameterType="cn.edu.scau.dbclub.mychat.pojo.do0.PyqComment">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into pyq_comment (pyq_id, user_id, content, 
+      `time`)
+    values (#{pyqId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
+      #{time,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updatePyqComment" parameterType="cn.edu.scau.dbclub.mychat.pojo.do0.PyqComment">
+    update pyq_comment
+    set pyq_id = #{pyqId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR},
+      `time` = #{time,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="getPyqComment" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, pyq_id, user_id, content, `time`
+    from pyq_comment
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="listPyqComments" resultMap="BaseResultMap">
+    select id, pyq_id, user_id, content, `time`
+    from pyq_comment
+  </select>
+  <!-- 2020-6-8更新 -->
+  <select id="getPyqCommentsByPyqId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, pyq_id, user_id, content, `time`
+    from pyq_comment
+    where pyq_id = #{pyqId,jdbcType=INTEGER}
+  </select>
+  
+</mapper>

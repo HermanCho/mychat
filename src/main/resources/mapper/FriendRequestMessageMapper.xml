@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.scau.dbclub.mychat.dao.FriendRequestMessageMapper">
+  <resultMap id="BaseResultMap" type="cn.edu.scau.dbclub.mychat.pojo.do0.FriendRequestMessage">
+    <id column="user_id" jdbcType="INTEGER" property="userId" />
+    <id column="friend_id" jdbcType="INTEGER" property="friendId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="apply_time" jdbcType="TIMESTAMP" property="applyTime" />
+  </resultMap>
+  <delete id="deleteFriendRequestMessage" parameterType="map">
+    delete from friend_request_message
+    where user_id = #{userId,jdbcType=INTEGER}
+      and friend_id = #{friendId,jdbcType=INTEGER}
+  </delete>
+  <insert id="saveFriendRequestMessage" parameterType="cn.edu.scau.dbclub.mychat.pojo.do0.FriendRequestMessage">
+    insert into friend_request_message (user_id, friend_id, content, 
+      apply_time)
+    values (#{userId,jdbcType=INTEGER}, #{friendId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
+      #{applyTime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateFriendRequestMessage" parameterType="cn.edu.scau.dbclub.mychat.pojo.do0.FriendRequestMessage">
+    update friend_request_message
+    set content = #{content,jdbcType=VARCHAR},
+      apply_time = #{applyTime,jdbcType=TIMESTAMP}
+    where user_id = #{userId,jdbcType=INTEGER}
+      and friend_id = #{friendId,jdbcType=INTEGER}
+  </update>
+  <select id="getFriendRequestMessages" parameterType="map" resultMap="BaseResultMap">
+    select user_id, friend_id, content, apply_time
+    from friend_request_message
+    where friend_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <select id="getFriendRequestMessage" parameterType="map" resultMap="BaseResultMap">
+    select user_id, friend_id, content, apply_time
+    from friend_request_message
+    where user_id = #{userId,jdbcType=INTEGER}
+    and friend_id = #{friendId,jdbcType=INTEGER}
+  </select>
+  <select id="listFriendRequestMessages" resultMap="BaseResultMap">
+    select user_id, friend_id, content, apply_time
+    from friend_request_message
+  </select>
+</mapper>

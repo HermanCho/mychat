@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.scau.dbclub.mychat.dao.GroupMapper">
+  <resultMap id="BaseResultMap" type="cn.edu.scau.dbclub.mychat.pojo.do0.Group">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="mem_num" jdbcType="INTEGER" property="memNum" />
+    <result column="mem_online_num" jdbcType="INTEGER" property="memOnlineNum" />
+    <result column="notice" jdbcType="VARCHAR" property="notice" />
+    <result column="qrcode" jdbcType="VARCHAR" property="qrcode" />
+  </resultMap>
+  <delete id="deleteGroup" parameterType="java.lang.Integer">
+    delete from `group`
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertGroup" parameterType="cn.edu.scau.dbclub.mychat.pojo.do0.Group">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into `group`(`name`, mem_num, mem_online_num, 
+      notice, qrcode)
+    values (#{name,jdbcType=VARCHAR}, #{memNum,jdbcType=INTEGER}, #{memOnlineNum,jdbcType=INTEGER}, 
+      #{notice,jdbcType=VARCHAR}, #{qrcode,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateGroup" parameterType="cn.edu.scau.dbclub.mychat.pojo.do0.Group">
+    update `group`
+    set `name` = #{name,jdbcType=VARCHAR},
+      mem_num = #{memNum,jdbcType=INTEGER},
+      mem_online_num = #{memOnlineNum,jdbcType=INTEGER},
+      notice = #{notice,jdbcType=VARCHAR},
+      qrcode = #{qrcode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectGroup" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, `name`, mem_num, mem_online_num, notice, qrcode
+    from `group`
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <!--  <select id="listGroups" resultMap="BaseResultMap">
+    select id, `name`, mem_num, mem_online_num, notice, qrcode
+    from group
+  </select>-->
+</mapper>

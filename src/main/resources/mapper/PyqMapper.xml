@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.scau.dbclub.mychat.dao.PyqMapper">
+  <resultMap id="BaseResultMap" type="cn.edu.scau.dbclub.mychat.pojo.do0.Pyq">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="sharer_id" jdbcType="INTEGER" property="sharerId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="picture_location" jdbcType="VARCHAR" property="pictureLocation" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+  </resultMap>
+  <delete id="deletePyq" parameterType="java.lang.Integer">
+    delete from pyq
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="savePyq" parameterType="cn.edu.scau.dbclub.mychat.pojo.do0.Pyq">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into pyq (sharer_id, content, picture_location, 
+      create_time, `type`)
+    values (#{sharerId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{pictureLocation,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{type,jdbcType=INTEGER})
+  </insert>
+  <update id="updatePyq" parameterType="cn.edu.scau.dbclub.mychat.pojo.do0.Pyq">
+    update pyq
+    set sharer_id = #{sharerId,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR},
+      picture_location = #{pictureLocation,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      `type` = #{type,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="getPyq" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, sharer_id, content, picture_location, create_time, `type`
+    from pyq
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="listPyqs" resultMap="BaseResultMap">
+    select id, sharer_id, content, picture_location, create_time, `type`
+    from pyq
+  </select>
+  <!-- 2020-6-8更新 -->
+   <select id="getUserAndFriendPyqsByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select pyq.id, pyq.sharer_id, pyq.content, pyq.picture_location, pyq.create_time, pyq.type
+     from pyq
+    where sharer_id = #{userId,jdbcType=INTEGER}
+      or type=1 and sharer_id in 
+   (select friend_id from user_friend 
+    where user_id = #{userId,jdbcType=INTEGER})
+  </select>
+  
+  
+  <select id="getPyqsByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, sharer_id, content, picture_location, create_time, `type`
+    from pyq
+    where sharer_id = #{userId,jdbcType=INTEGER}
+  </select>
+</mapper>
